@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Enchanted Tide Pool</title>
+<meta name="description" content="A cozy habit planner with a magical pixel tide pool. Check things off and treat a school of silly fish to a snack.">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pixelify+Sans:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14283d;--paper:#fffdf6;--sun:#ffd35c;--px:"Pixelify Sans","Courier New",monospace}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;font:16px/1.5 Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(circle,rgba(255,255,255,.9) 1.5px,transparent 2px) 0 0/30px 30px,linear-gradient(#bff0e6,#e6fbf4 50%,#ffe9dc) fixed}
+.wrap{max-width:1150px;margin:0 auto;padding:22px 14px 60px}
+.hd{display:flex;gap:18px;align-items:center;margin-bottom:24px}
+.logo{flex:none;padding:10px;background:#35c2cf;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}.logo canvas{display:block;image-rendering:pixelated}
+h1{font:700 clamp(28px,6vw,48px)/1.05 var(--px);margin:0 0 8px;text-shadow:3px 3px 0 #ff9aa8}
+h2{font:700 28px/1.1 var(--px);margin:0}h3{font:700 20px/1.2 var(--px);margin:0}
+.welcome{margin:0;max-width:60ch}
+.grid{display:grid;gap:26px;grid-template-columns:1fr;align-items:start}
+@media(min-width:900px){.grid{grid-template-columns:1fr 1fr}.tankcol{position:sticky;top:16px}}
+.bar{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:12px}.bar p{margin:2px 0 0}
+.card{background:var(--paper);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:18px}
+.eyebrow{font:700 12px var(--px);letter-spacing:.2em;color:#0a7c80;margin:0 0 2px}
+#greet{margin:6px 0 16px}
+button{font:inherit;color:var(--ink);cursor:pointer}
+:focus-visible{outline:3px solid #7a3cff;outline-offset:2px}
+.btn{display:inline-flex;gap:8px;align-items:center;background:#fff;border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);padding:8px 14px;font-weight:700}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn.ok{background:#7be0b4}.btn.go{background:#ff6f61}.btn:disabled{opacity:.5;cursor:default}
+.next{padding:16px;margin-bottom:22px;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);background:linear-gradient(135deg,#fff3dc,#ffe4ec)}
+.next small{display:block;margin-top:10px;font-weight:700}.big{font-size:1.4rem;font-weight:700;margin:2px 0;overflow-wrap:anywhere}.why{margin:0 0 8px;font-size:.92rem}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.add{display:flex;gap:10px;margin:10px 0}
+#txt{flex:1;min-width:0;font:inherit;padding:11px 12px;border:3px solid var(--ink);background:#fff;color:var(--ink)}
+.opts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}.lbl{font-weight:700;margin-right:2px}
+.opts button,.seg button{background:#fff;border:2px solid var(--ink);padding:6px 12px;font-weight:700;font-size:.92rem}
+.opts button[aria-pressed=true]{background:#35c2cf;box-shadow:inset 0 0 0 2px #fff}
+.seg{display:inline-flex}.seg button+button{border-left:0}
+#status{min-height:1.6em;font-size:.92rem}#status button{background:none;border:0;text-decoration:underline;color:#5a2bd0;padding:4px}
+.hrow{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 10px}
+ul{list-style:none;margin:0;padding:0}
+.row{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:12px;background:#fff;border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.row.done .txt{text-decoration:line-through;opacity:.7}
+.check{flex:none;width:40px;height:40px;border:3px solid var(--ink);background:#fff;font-size:22px;font-weight:700;line-height:1}
+.check[aria-pressed=true]{background:#7be0b4}
+.main{flex:1;min-width:0}.txt{font-weight:700;overflow-wrap:anywhere}.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chip{font-size:.75rem;font-weight:700;padding:1px 8px;border:2px solid var(--ink);background:#fff2b8}
+.c-Health{background:#ffc9d6}.c-Work{background:#ffd98a}.c-Mind{background:#e0d4ff}.c-Movement{background:#a8f0cf}
+.icon{flex:none;background:none;border:0;padding:6px;font-size:24px;line-height:1;display:flex}.icon[aria-pressed=true]{color:#d99a00}
+.empty{font-style:italic;padding:2px}
+.done-box{margin-top:20px;border:3px solid #1f9e6a;background:#e6fbf0;box-shadow:4px 4px 0 #1f9e6a}
+#doneToggle{width:100%;display:flex;gap:10px;align-items:center;background:none;border:0;padding:12px 14px;font:700 20px var(--px)}
+#doneToggle b{font:700 15px Nunito,sans-serif;border:2px solid var(--ink);background:#fff;padding:0 8px}
+#doneToggle::after{content:"▾";margin-left:auto}#doneToggle[aria-expanded=false]::after{content:"▸"}
+#doneBody{padding:0 14px 14px}.note,.foot{font-size:.85rem;color:#35506b}.foot{margin:18px 0 0}
+.water{position:relative;height:460px;overflow:hidden;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);background:linear-gradient(#9af3e8,#3fb4dc 65%,#2a86c8)}
+@media(max-width:899px){.water{height:290px}}
+.water::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(105deg,transparent 0 50px,rgba(255,255,255,.15) 50px 90px);-webkit-mask-image:linear-gradient(#000,transparent 75%);mask-image:linear-gradient(#000,transparent 75%)}
+.water::after{content:"";position:absolute;left:0;right:0;top:0;height:14px;z-index:1;pointer-events:none;background:repeating-linear-gradient(90deg,#eafffb 0 16px,#c4f7f0 16px 32px)}
+.sand{position:absolute;left:0;right:0;bottom:0;height:27%;background:radial-gradient(circle,#e7b960 1.5px,transparent 2px) 0 0/22px 22px,#f6dc9e}
+.sand::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px;background:repeating-linear-gradient(90deg,#f6dc9e 0 70px,transparent 70px 140px)}
+.decor canvas{position:absolute;image-rendering:pixelated}
+.sway{transform-origin:50% 100%;animation:sway 4s ease-in-out infinite alternate}@keyframes sway{to{transform:rotate(5deg)}}
+#bubbles span{position:absolute;bottom:-14px;border:2px solid rgba(255,255,255,.9);background:rgba(255,255,255,.25);border-radius:50%;animation:rise linear infinite}
+@keyframes rise{0%{transform:translate(0);opacity:0}10%{opacity:.9}100%{transform:translate(14px,calc(var(--rise,420px)*-1));opacity:0}}
+.paused #bubbles span,.paused .sway{animation-play-state:paused}
+.fish{position:absolute;left:0;top:0;padding:0;border:0;background:none;z-index:2;will-change:transform}
+.fish canvas{display:block;image-rendering:pixelated}.fish.show{z-index:6}
+.tip{display:none;position:absolute;pointer-events:none;background:var(--paper);border:3px solid var(--ink);padding:6px 9px;font-size:.82rem;line-height:1.3;text-align:left}
+.fish.show .tip{display:block}.tip b{display:block;font:700 15px var(--px);margin-bottom:2px}
+.food{position:absolute;left:0;top:0;width:10px;height:10px;background:#a0522d;border:2px solid #5b2b12;z-index:3}
+.spark{position:absolute;width:9px;height:9px;margin:-4px;background:var(--sun);z-index:4;pointer-events:none;clip-path:polygon(40% 0,60% 0,60% 40%,100% 40%,100% 60%,60% 60%,60% 100%,40% 100%,40% 60%,0 60%,0 40%,40% 40%);animation:spark .8s ease-out forwards}
+@keyframes spark{from{transform:scale(.3);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(1.3);opacity:0}}
+@keyframes fade{from{opacity:1}to{opacity:0}}
+.hint{margin:14px 0 0}
+@media(prefers-reduced-motion:reduce){#bubbles{display:none}.sway{animation:none}.spark{animation:fade .8s forwards}.btn:active{transform:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="hd"><div class="logo" id="logo"></div><div><h1>My Enchanted Tide Pool</h1><p class="welcome">Welcome to your little corner of the sea. Plan a few kind things for today, and every one you finish drops a tasty snack for the fish.</p></div></header>
+<div class="grid">
+<section class="tankcol" aria-label="Enchanted tide pool">
+<div class="bar"><div><h2>The Tide Pool</h2><p id="cap"></p></div><button class="btn" id="pause" aria-pressed="false"></button></div>
+<div class="water" id="tank"><div id="bubbles"></div><div class="sand"></div><div class="decor" id="decor"></div></div>
+<p class="hint" id="hint"></p>
+</section>
+<section class="card" aria-labelledby="todayH">
+<p class="eyebrow">TODAY</p><h2 id="todayH"></h2><p id="greet"></p>
+<div class="next" aria-live="polite"><h3>What should I do next?</h3><small>How about this one:</small><p class="big" id="nextTxt"></p><p class="why" id="why"></p><div class="chips" id="nextChips"></div>
+<div class="btns"><button class="btn ok" id="doneNext">✓ Mark as done</button><button class="btn" id="another">⇄ Suggest another</button></div></div>
+<h3>Add a habit or task</h3>
+<div class="add"><input type="text" id="txt" maxlength="120" placeholder="Like “Water the plants”" aria-label="Habit or task name"><button class="btn go" id="addBtn">+ Add</button></div>
+<div class="opts"><span class="lbl">Category (optional)</span><span id="cats" class="opts"></span></div>
+<div class="opts"><span class="lbl">Repeats</span><span class="seg"><button id="rDay" aria-pressed="true">Every day</button><button id="rOnce" aria-pressed="false">Just once</button></span></div>
+<div class="opts"><button id="tQuick" aria-pressed="false">⚡ Quick win</button><button id="tImp" aria-pressed="false">★ Important</button></div>
+<div id="status" role="status" aria-live="polite"></div>
+<div class="hrow"><h3>On your list</h3><span id="count"></span></div><ul id="active"></ul>
+<div class="done-box"><button id="doneToggle" aria-expanded="true"><span>Completed today</span><b id="doneN">0</b></button>
+<div id="doneBody"><ul id="doneList"></ul><p class="note">Daily habits come back fresh tomorrow. One-time tasks are tucked away once finished, never deleted.</p></div></div>
+<p class="foot">Your plans are saved in this browser, so there is no account to make. Be gentle with yourself today. Even small things count.</p>
+</section>
+</div>
+</main>
+<script>
+const $=s=>document.querySelector(s),CATS=["Health","Work","Mind","Movement"],KEY="tidepool.v1";
+const RM=matchMedia("(prefers-reduced-motion: reduce)");
+let mem=null,paused=RM.matches;const still=()=>paused;
+const store={get(){try{return localStorage.getItem(KEY)}catch(e){return mem}},set(v){mem=v;try{localStorage.setItem(KEY,v)}catch(e){}}};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7),pad=n=>String(n).padStart(2,"0");
+const today=()=>{const d=new Date();return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())};
+const norm=i=>({id:String(i.id||uid()),text:String(i.text).slice(0,120),cat:CATS.includes(i.cat)?i.cat:"",daily:i.daily!==false&&!!i.daily,quick:!!i.quick,star:!!i.star,doneOn:typeof i.doneOn==="string"?i.doneOn:null});
+let day=today(),items=[],sug=0,undoTm,fCat="",fDaily=true,fQuick=false,fImp=false;
+const raw=store.get();
+if(raw){try{const p=JSON.parse(raw);if(Array.isArray(p.items))items=p.items.filter(i=>i&&typeof i.text==="string").map(norm)}catch(e){}}
+else{items=[["Drink a big glass of water","Health",1,1],["Stretch for five minutes","Movement",1,1],["Reply to one email","Work",0,0],["Write down one nice thing about today","Mind",1,0]].map(a=>norm({text:a[0],cat:a[1],daily:!!a[2],quick:!!a[3]}));}
+const save=()=>store.set(JSON.stringify({items}));if(!raw)save();
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const say=(m,u)=>{const s=$("#status");s.textContent=m;if(u){const b=el("button",0,"Undo");b.onclick=()=>{u();s.textContent=""};s.append(" ",b)}clearTimeout(undoTm);undoTm=setTimeout(()=>s.textContent="",7000)};
+const chipsFor=i=>[i.cat&&el("span","chip c-"+i.cat,i.cat),el("span","chip",i.daily?"Every day":"One-time"),i.quick&&el("span","chip","Quick win"),i.star&&el("span","chip","Important")].filter(Boolean);
+const TRASH='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>';
+function row(i,isDone){
+ const li=el("li","row"+(isDone?" done":"")),c=el("button","check",isDone?"✓":""),m=el("div","main");
+ c.setAttribute("aria-pressed",String(isDone));c.setAttribute("aria-label",(isDone?"Mark not done: ":"Mark done: ")+i.text);c.onclick=()=>toggle(i.id);
+ m.append(el("div","txt",i.text));const ch=el("div","chips");ch.append(...chipsFor(i));m.append(ch);li.append(c,m);
+ if(!isDone){const s=el("button","icon",i.star?"★":"☆");s.setAttribute("aria-pressed",String(i.star));s.setAttribute("aria-label",(i.star?"Remove important mark: ":"Mark important: ")+i.text);s.onclick=()=>{i.star=!i.star;save();render()};li.append(s)}
+ const r=el("button","icon");r.innerHTML=TRASH;r.setAttribute("aria-label","Remove "+i.text);r.onclick=()=>remove(i.id);li.append(r);return li}
+const activeList=()=>items.filter(i=>!i.doneOn||(i.daily&&i.doneOn!==day));
+const ranked=a=>a.map((i,k)=>[i,k]).sort((x,y)=>(+y[0].star-+x[0].star)||(+y[0].quick-+x[0].quick)||x[1]-y[1]).map(z=>z[0]);
+function render(){
+ const act=activeList(),done=items.filter(i=>i.doneOn===day),R=ranked(act),n=R.length,h=new Date().getHours();
+ $("#todayH").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
+ $("#greet").textContent=(h<12?"Good morning":h<18?"Good afternoon":"Good evening")+"! What would feel nice to do today?";
+ if(sug>=n)sug=0;
+ $("#doneNext").hidden=$("#another").hidden=!n;$("#another").disabled=n<2;$("#nextChips").replaceChildren();
+ if(n){const i=R[sug];$("#nextTxt").textContent=i.text;$("#nextChips").append(...chipsFor(i));
+  $("#why").textContent=(i.star?"You starred this one, so it goes first.":i.quick?"It's a quick win, a nice way to get things flowing.":"It's next on your list.")+(sug?" (suggestion "+(sug+1)+" of "+n+")":"")}
+ else{$("#nextTxt").textContent=done.length?"All done for today. The tide pool is purring.":"Nothing waiting. Add something below to begin.";$("#why").textContent=""}
+ $("#count").textContent=n+(n===1?" thing":" things");$("#doneN").textContent=done.length;
+ const A=$("#active"),D=$("#doneList");A.replaceChildren();D.replaceChildren();
+ act.forEach(i=>A.append(row(i,false)));done.forEach(i=>D.append(row(i,true)));
+ if(!n)A.append(el("li","empty","Nothing waiting right now."));
+ if(!done.length)D.append(el("li","empty","Nothing here yet, and that is perfectly okay. Things you finish today will gather here."))}
+function toggle(id){const i=items.find(x=>x.id===id);if(!i)return;const fin=i.doneOn!==day;i.doneOn=fin?day:null;save();render();if(fin){feedTank();say("Nice. The fish are having a snack.")}}
+function add(){const t=$("#txt").value.trim();if(!t){say("Type a habit or task first.");return}
+ items.push(norm({text:t,cat:fCat,daily:fDaily,quick:fQuick,star:fImp}));save();$("#txt").value="";fQuick=fImp=false;setForm();render();$("#txt").focus();say("Added.")}
+function remove(id){const k=items.findIndex(x=>x.id===id);if(k<0)return;const[it]=items.splice(k,1);save();render();say("Removed “"+it.text+"”.",()=>{items.splice(Math.min(k,items.length),0,it);save();render()})}
+const catBtns=CATS.map(c=>{const b=el("button",0,c);b.onclick=()=>{fCat=fCat===c?"":c;setForm()};$("#cats").append(b);return b});
+function setForm(){catBtns.forEach(b=>b.setAttribute("aria-pressed",String(b.textContent===fCat)));
+ $("#rDay").setAttribute("aria-pressed",String(fDaily));$("#rOnce").setAttribute("aria-pressed",String(!fDaily));
+ $("#tQuick").setAttribute("aria-pressed",String(fQuick));$("#tImp").setAttribute("aria-pressed",String(fImp))}
+$("#rDay").onclick=()=>{fDaily=true;setForm()};$("#rOnce").onclick=()=>{fDaily=false;setForm()};
+$("#tQuick").onclick=()=>{fQuick=!fQuick;setForm()};$("#tImp").onclick=()=>{fImp=!fImp;setForm()};
+$("#addBtn").onclick=add;$("#txt").onkeydown=e=>{if(e.key==="Enter")add()};
+$("#doneNext").onclick=()=>{const r=ranked(activeList());if(r[sug])toggle(r[sug].id)};
+$("#another").onclick=()=>{sug=(sug+1)%Math.max(1,activeList().length);render()};
+$("#doneToggle").onclick=e=>{const o=e.currentTarget.getAttribute("aria-expanded")==="true";e.currentTarget.setAttribute("aria-expanded",String(!o));$("#doneBody").hidden=o};
+function checkDay(){if(today()!==day){day=today();sug=0;render()}}
+document.addEventListener("visibilitychange",checkDay);addEventListener("focus",checkDay);setInterval(checkDay,60000);
+
+/* ---------- tide pool ---------- */
+const tank=$("#tank"),rnd=(a,b)=>a+Math.random()*(b-a),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function sprite(rows,pal,sc){const c=document.createElement("canvas");c.width=rows[0].length;c.height=rows.length;c.style.width=c.width*sc+"px";c.style.height=c.height*sc+"px";const x=c.getContext("2d");rows.forEach((r,y)=>[...r].forEach((ch,i)=>{if(pal[ch]){x.fillStyle=pal[ch];x.fillRect(i,y,1,1)}}));return c}
+const SH={round:["....aaaa....","...bbbbbb...","a.bbbbbbbbb.","aabbbbbbwebb","aabbbbbbbbbb","a.bbcccccc..","...cccccc...","....aaa....."],
+long:["a.....bbbb....","aa..bbbbbbbb..","aabbbbbbbbwebb","aabbbbbbbbbbbb","aa..cccccccc..","a.....cccc...."]};
+function rowsOf(d){let r=SH[d.s].slice();if(d.stripe)r=r.map((x,y)=>y>0&&y<7?[...x].map((c,i)=>(i===4||i===7)&&c==="b"?"w":c).join(""):x);if(d.sleepy)r=r.map(x=>x.replace("we","ee"));if(d.crown)r=["....k.k.k...","....kkkkk..."].concat(r);return r}
+const mk=d=>sprite(rowsOf(d),{...d.p,e:"#14283d",w:"#fff",k:"#ffd35c"},d.sc);
+const FISH=[
+{n:"Biscuit",d:"Believes every bubble is a personal compliment.",s:"round",stripe:1,p:{b:"#ff8a3d",c:"#ffd3a8",a:"#ff5252"},sc:4,sp:34,pause:.1,wig:.4},
+{n:"Sir Glimmer",d:"Pauses to admire his own reflection.",s:"long",p:{b:"#2bd4c4",c:"#c9fff6",a:"#0f8f93"},sc:3,sp:42,pause:.4,wig:.1},
+{n:"Pip",d:"Very small. Very sure of herself. Wears the crown.",s:"round",crown:1,p:{b:"#ff7ac8",c:"#ffd1ee",a:"#c23a95"},sc:3,sp:70,pause:.1,wig:.25},
+{n:"Noodle",d:"Swims like he's late for something imaginary.",s:"long",p:{b:"#a58bff",c:"#e4daff",a:"#6a4fd1"},sc:3,sp:88,pause:.05,wig:.2},
+{n:"Mochi",d:"Mostly vibes.",s:"round",p:{b:"#ffd35c",c:"#fff2b8",a:"#f0a020"},sc:4,sp:24,pause:.3,wig:.3},
+{n:"Puddle",d:"Naps between sentences.",s:"round",sleepy:1,p:{b:"#4a9bf0",c:"#d6ebff",a:"#ffd35c"},sc:4,sp:28,pause:.35,wig:.1}];
+$("#logo").append(sprite(rowsOf(FISH[0]),{...FISH[0].p,e:"#14283d",w:"#fff"},4));
+const CORAL=["p..p...p.","pp.pp..pp",".ppppp.p.","..pppppp.","...ppp...","...qqq...","...qqq...","..qqqqq.."],
+WEED=["..g..",".gg..",".g...",".gg..","..gg.","..g..",".gg..",".g...",".gg..","..g..","..gg.","..g.."],
+SHELL=["..sss..",".sdsds.","sdsdsds","sssssss",".ddddd."],
+STAR=["....o....","....o....","...ooo...","ooooooooo",".ooooooo.","..ooooo..","..oo.oo..",".oo...oo.",".o.....o."],
+SPONGE=["..oooo..",".oooooo.","oooooooo","oooooooo",".oooooo."],
+CLAM=["..ppppp..",".ppqpqpp.","pqpqpqpqp","ppppppppp",".qqqwqqq.","..qqqqq.."];
+[[CORAL,{p:"#ff6f91",q:"#b83a63"},5,"4%",18],[WEED,{g:"#2fbf71"},5,"15%",20,1],[STAR,{o:"#ff9a2e"},4,"23%",5],[SPONGE,{o:"#f0a020"},5,"34%",8],[SHELL,{s:"#ffd0dc",d:"#f08aa4"},5,"46%",4],[CLAM,{p:"#a58bff",q:"#6a4fd1",w:"#fff"},5,"58%",4],[CORAL,{p:"#b39bff",q:"#6a4fd1"},4,"74%",16],[WEED,{g:"#1f9e6a"},5,"86%",20,1],[WEED,{g:"#2fbf71"},4,"93%",20,1]]
+ .forEach(([r,p,sc,l,b,sw])=>{const c=sprite(r,p,sc);c.style.left=l;c.style.bottom=b+"%";if(sw)c.className="sway";$("#decor").append(c)});
+let foods=[];const W0=tank.clientWidth||400,H0=tank.clientHeight||300;
+const fish=FISH.map(d=>{
+ const spr=el("div"),cv=mk(d),tip=el("div","tip"),b=el("button","fish");
+ spr.append(cv);tip.setAttribute("aria-hidden","true");tip.append(el("b",0,d.n),el("span",0,d.d));
+ b.setAttribute("aria-label",d.n+": "+d.d);b.append(spr,tip);tank.append(b);
+ const f={...d,el:b,spr,tip,w:parseFloat(cv.style.width),h:parseFloat(cv.style.height),x:rnd(0,W0-60),y:rnd(24,H0*.55),ty:rnd(24,H0*.55),dir:Math.random()<.5?1:-1,state:"swim",t:rnd(1,3),tilt:0,ph:rnd(0,6),food:null,pinned:false};
+ b.addEventListener("mouseenter",()=>b.classList.add("show"));
+ b.addEventListener("mouseleave",()=>{if(!f.pinned)b.classList.remove("show")});
+ b.addEventListener("focus",()=>b.classList.add("show"));
+ b.addEventListener("blur",()=>{if(!f.pinned)b.classList.remove("show")});
+ b.addEventListener("click",e=>{e.stopPropagation();closeTips();b.classList.add("show");f.pinned=true;f.tm=setTimeout(closeTips,4500)});
+ return f});
+function closeTips(){fish.forEach(f=>{f.pinned=false;clearTimeout(f.tm);f.el.classList.remove("show")})}
+document.addEventListener("click",closeTips);document.addEventListener("keydown",e=>{if(e.key==="Escape")closeTips()});
+const bub=$("#bubbles");for(let i=0;i<16;i++){const b=el("span"),s=rnd(4,12);b.style.cssText=`left:${rnd(0,96)}%;width:${s}px;height:${s}px;animation-duration:${rnd(7,14)}s;animation-delay:-${rnd(0,10)}s`;bub.append(b)}
+const setRise=()=>tank.style.setProperty("--rise",tank.clientHeight+30+"px");setRise();addEventListener("resize",setRise);
+function setPaused(p){paused=p;tank.classList.toggle("paused",p);const b=$("#pause");b.textContent=p?"▶ Let them swim":"❚❚ Pause motion";b.setAttribute("aria-pressed",String(p));
+ $("#cap").textContent="Tap or hover over a fish to say hello.";$("#hint").textContent=p?"The pool is resting. Snacks still arrive when you finish something.":"Finish something on your list and a snack drifts down."}
+$("#pause").onclick=()=>setPaused(!paused);RM.addEventListener&&RM.addEventListener("change",e=>setPaused(e.matches));
+function sparkle(x,y,n){if(still())n=Math.min(n,2);for(let i=0;i<n;i++){const s=el("i","spark"),a=rnd(0,6.28),r=rnd(14,40);s.style.cssText=`left:${x}px;top:${y}px;--dx:${Math.cos(a)*r}px;--dy:${Math.sin(a)*r}px`;tank.append(s);setTimeout(()=>s.remove(),900)}}
+setInterval(()=>{if(!still()&&!document.hidden)sparkle(rnd(20,tank.clientWidth-20),rnd(30,tank.clientHeight*.65),1)},2300);
+const place=fd=>fd.el.style.transform=`translate(${fd.x-5}px,${fd.y-5}px)`;
+function feedTank(){
+ const W=tank.clientWidth,H=tank.clientHeight,e=el("div","food");tank.append(e);
+ const fd={x:rnd(W*.2,W*.8),y:still()?H*.45:20,el:e,gone:false,age:0};foods.push(fd);place(fd);
+ const free=fish.filter(f=>f.state!=="chase"),pool=free.length?free:fish;
+ const best=pool.reduce((a,f)=>Math.abs(f.x+f.w/2-fd.x)<Math.abs(a.x+a.w/2-fd.x)?f:a);
+ if(still()){best.x=fd.x-best.w/2;best.y=fd.y-best.h/2;sparkle(fd.x,fd.y,2);setTimeout(()=>{fd.gone=true;e.remove()},1000)}
+ else{best.state="chase";best.food=fd}}
+function resume(f,maxY){f.state="swim";f.t=rnd(1,4);f.ty=rnd(24,Math.max(25,maxY));f.tilt=0}
+function eat(f,fd){fd.gone=true;fd.el.remove();sparkle(fd.x,fd.y,7);f.state="wiggle";f.t=.9;f.food=null}
+function placeTip(f,W){const tw=Math.min(180,W-8);f.tip.style.width=tw+"px";f.tip.style.left=clamp(f.x+f.w/2-tw/2,4,W-tw-4)-f.x+"px";const below=f.y<90;f.tip.style.top=below?f.h+6+"px":"auto";f.tip.style.bottom=below?"auto":f.h+6+"px"}
+let last=performance.now();
+function frame(now){
+ const dt=Math.min(.05,(now-last)/1000);last=now;
+ const W=tank.clientWidth,H=tank.clientHeight,floor=H*.72,st=still();
+ for(const f of fish){
+  const maxX=W-f.w,maxY=floor-f.h;
+  if(!st){f.t-=dt;
+   if(f.state==="swim"){f.x+=f.dir*f.sp*dt;f.y+=(f.ty-f.y)*.8*dt;f.tilt=clamp((f.ty-f.y)*.15,-12,12);
+    if(f.x<=0)f.dir=1;if(f.x>=maxX)f.dir=-1;
+    if(f.t<=0){const r=Math.random();
+     if(r<f.pause){f.state="pause";f.t=rnd(1,2.8)}
+     else if(r<f.pause+f.wig){f.state="wiggle";f.t=.8}
+     else if(r<f.pause+f.wig+.15){f.dir*=-1;f.t=rnd(1,4)}
+     else{f.ty=rnd(24,Math.max(25,maxY));f.t=rnd(1.5,4.5)}}}
+   else if(f.state==="pause"){f.tilt*=.9;f.y+=Math.sin(now/350+f.ph)*.2;if(f.t<=0)resume(f,maxY)}
+   else if(f.state==="wiggle"){f.tilt=Math.sin(now/45)*9;if(f.t<=0)resume(f,maxY)}
+   else if(f.state==="chase"){const fd=f.food;
+    if(!fd||fd.gone)resume(f,maxY);
+    else{const dx=fd.x-(f.x+f.w/2),dy=fd.y-(f.y+f.h/2),dist=Math.hypot(dx,dy)||1;
+     if(dist<f.w*.5+8)eat(f,fd);
+     else{f.x+=dx/dist*f.sp*2*dt;f.y+=dy/dist*f.sp*2*dt;if(Math.abs(dx)>4)f.dir=dx>0?1:-1;f.tilt=dy/dist*12}}}}
+  f.x=clamp(f.x,0,Math.max(0,maxX));f.y=clamp(f.y,20,Math.max(20,maxY));
+  f.el.style.transform=`translate(${f.x}px,${f.y}px)`;f.spr.style.transform=`scaleX(${f.dir}) rotate(${f.tilt}deg)`;
+  if(f.el.classList.contains("show"))placeTip(f,W)}
+ for(const fd of foods){if(fd.gone)continue;fd.age+=dt;
+  if(!st){if(fd.y<floor-6)fd.y+=32*dt;place(fd);if(fd.age>14){fd.gone=true;fd.el.remove()}}}
+ foods=foods.filter(f=>!f.gone);
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+setForm();setPaused(paused);render();
+</script>
+</body>
+</html>
