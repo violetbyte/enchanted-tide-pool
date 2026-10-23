@@ -2,7 +2,7 @@
 
 A cozy habit planner with an animated pixel-art tide pool. Check things off your list and a snack drifts down for the fish.
 
-**Live demo:** https://enchanted-tide-pool.vercel.app *(replace with your real Vercel URL)*
+**Live demo:** https://enchanted-tide-pool.vercel.app/
 
 <!-- Add a screenshot or short screen recording here, e.g.:
 ![My Enchanted Tide Pool](docs/screenshot.png)
