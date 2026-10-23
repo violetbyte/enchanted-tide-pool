@@ -4,11 +4,12 @@ A cozy habit planner with an animated pixel-art tide pool. Check things off your
 
 **Live demo:** https://enchanted-tide-pool.vercel.app/
 
-<!-- Add a screenshot or short screen recording here, e.g.:
-![My Enchanted Tide Pool](docs/screenshot.png)
--->
+<img width="1887" height="1015" alt="image" src="https://github.com/user-attachments/assets/ab5dec24-607c-4ca7-892f-252bc7e12ea8" />
+
 
 The whole app is one file, `index.html`. It uses plain HTML, CSS and JavaScript, with no framework, no build step and no backend.
+
+
 
 ## Features
 
